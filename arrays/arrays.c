@@ -98,17 +98,22 @@ if (index >= arr->count) {
  * Store the VALUE of the given string, not the REFERENCE
  *****/
 void arr_insert(Array *arr, char *element, int index) {
-
+if (index >= arr->count) {
+  fprintf(stderr, "IndexError: Index out of range\n");
+  return NULL;
   // Throw an error if the index is greater than the current count
-
+  if(arr->capacity <= arr->count) {
+    resize_array(arr);
+  }
   // Resize the array if the number of elements is over capacity
-
+  for (int i = arr->count-1; i = index; i--) {
+    arr->elements[i+1] = arr->elements[i];
+  }
   // Move every element after the insert index to the right one position
-
+  arr->elements[index] = strdup(element);
   // Copy the element (hint: use `strdup()`) and add it to the array
-
+  arr->count += 1;
   // Increment count by 1
-
 }
 
 /*****
