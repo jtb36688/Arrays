@@ -29,7 +29,7 @@ Array *create_array (int capacity) {
   // Set initial values for capacity and count
 
   // Allocate memory for elements
-
+  return arr;
 }
 
 
@@ -39,7 +39,7 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-for (int = 0; i < arr->count; i++) {
+for (int i = 0; i < arr->count; i++) {
   free(arr->elements[i]);
 }
   // Free array
@@ -56,7 +56,7 @@ void resize_array(Array *arr) {
   // Create a new element storage with double capacity
   char **newstorage = malloc(sizeof(char*) * arr->capacity * 2);
   // Copy elements into the new storage
-  for (int i = 0; i <= sizeof(arr->elements)/sizeof(arr->elements[0]); i++) {
+  for (int i = 0; i < arr->count; i++) {
     newstorage[i] = arr->elements[i];
   }
   // Free the old elements array (but NOT the strings they point to)
@@ -82,7 +82,7 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 if (index >= arr->count) {
   fprintf(stderr, "IndexError: Index out of range\n");
-  return NULL;
+  exit(1);
 }
 
   // Throw an error if the index is greater or equal to than the current count
@@ -100,13 +100,14 @@ if (index >= arr->count) {
 void arr_insert(Array *arr, char *element, int index) {
 if (index >= arr->count) {
   fprintf(stderr, "IndexError: Index out of range\n");
-  return NULL;
+  exit(1);
+}
   // Throw an error if the index is greater than the current count
   if(arr->capacity <= arr->count) {
     resize_array(arr);
   }
   // Resize the array if the number of elements is over capacity
-  for (int i = arr->count-1; i = index; i--) {
+  for (int i = arr->count-1; i != index; i--) {
     arr->elements[i+1] = arr->elements[i];
   }
   // Move every element after the insert index to the right one position
@@ -141,17 +142,15 @@ arr->count += 1;
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
-  for (int i = 0; i = arr->count; i++) {
+  for (int i = 0; i < arr->count; i++) {
     if (arr->elements[i] == element) {
-      free(arr->elements[i])
-      for (int x = i; i = arr->count; i++) {
-        arr->elements[i] = arr->elements[i+1];
+      // free(arr->elements[i]);
+      for (int x = i; x < arr->count; x++) {
+        arr->elements[x] = arr->elements[x+1];
       }
       break;
     }
   }
-
-  return NULL;
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
 
@@ -184,15 +183,16 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
-  arr_print(arr);
+  // arr_append(arr, "STRING4");
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
+  // arr_print(arr);
   // arr_remove(arr, "STRING3");
   // arr_print(arr);
 
-  // destroy_array(arr);
+  destroy_array(arr);
 
   return 0;
 }
+
 #endif
