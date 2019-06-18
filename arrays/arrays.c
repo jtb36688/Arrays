@@ -141,7 +141,17 @@ arr->count += 1;
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
+  for (int i = 0; i = arr->count; i++) {
+    if (arr->elements[i] == element) {
+      free(arr->elements[i])
+      for (int x = i; i = arr->count; i++) {
+        arr->elements[i] = arr->elements[i+1];
+      }
+      break;
+    }
+  }
 
+  return NULL;
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
 
