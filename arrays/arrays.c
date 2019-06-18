@@ -54,13 +54,17 @@ for (int = 0; i < arr->count; i++) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  int *newstorage = malloc(sizeof(char*) * arr->capacity * 2)
   // Copy elements into the new storage
-
+  (int i = 0; i <= sizeof(arr->elements)/sizeof(arr->elements[0]); i++) {
+    char *element_copy = strdup(element->[i]);
+    newstorage[i] = *element_copy;
+  }
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
-
+  arr->capacity = (arr->capacity * 2);
+  arr->elements = newstorage;
 }
 
 
