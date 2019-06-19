@@ -147,18 +147,24 @@ arr->count += 1;
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
-  for (int i = 0; i < arr->count; i++) {
-    if (strcmp(arr->elements[i], element) == 0) {
-      printf("Found remove\n");
-      free(arr->elements[i]);
-      for (int x = i; x < arr->count; x++) {
-        printf("Running Loop %s becoming %s\n", arr->elements[x], arr->elements[x+1]);
-        arr->elements[x] = arr->elements[x+1];
-      }
-      arr->count--;
-      exit(1);
+  int found = 0;
+  // Search for the first occurence of the element and remove it.
+  // Don't forget to free its memory!
+  for (int i = 0; i < arr->count; i++){
+    if (strcmp(arr->elements[i], element) == 0){
+      found = i;
     }
   }
+  if (found < 0){
+    fprintf(stderr, "Provided element not found within provided array.\n");
+    exit(1);
+  }
+  free(arr->elements[found]);
+  for (int i = found; i < arr->count; i++){
+    arr->elements[i] = arr->elements[i+1];
+  }
+  arr->count--;
+}
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
 
@@ -166,7 +172,6 @@ void arr_remove(Array *arr, char *element) {
 
   // Decrement count by 1
 
-}
 
 
 /*****
