@@ -112,8 +112,8 @@ if (index > arr->count) {
     resize_array(arr);
   }
   // Resize the array if the number of elements is over capacity
-  for (int i = arr->count-1; i >= index; i--) {
-    arr->elements[i+1] = arr->elements[i];
+  for (int i = arr->count; i > index; i--) {
+    arr->elements[i] = arr->elements[i-1];
   }
   // Move every element after the insert index to the right one position
   arr->elements[index] = strdup(element);
