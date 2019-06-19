@@ -54,16 +54,21 @@ for (int i = 0; i < arr->count; i++) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  char **newstorage = malloc(sizeof(char*) * arr->capacity * 2);
+  int newCapacity = arr->capacity * 2;
+  char **newStorage = malloc( newCapacity * sizeof(char *) );
+
   // Copy elements into the new storage
-  for (int i = 0; i < arr->count; i++) {
-    newstorage[i] = arr->elements[i];
+
+  for (int i = 0; i < arr->count; i++){
+    newStorage[i] = arr->elements[i];
   }
   // Free the old elements array (but NOT the strings they point to)
+
   free(arr->elements);
   // Update the elements and capacity to new values
-  arr->capacity = (arr->capacity * 2);
-  arr->elements = newstorage;
+
+  arr->capacity = newCapacity;
+  arr->elements = newStorage;
 }
 
 
@@ -82,7 +87,7 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 if (index >= arr->count) {
   fprintf(stderr, "IndexError: Index out of range\n");
-  exit(1);
+  return NULL;
 }
 
   // Throw an error if the index is greater or equal to than the current count
@@ -98,7 +103,7 @@ if (index >= arr->count) {
  * Store the VALUE of the given string, not the REFERENCE
  *****/
 void arr_insert(Array *arr, char *element, int index) {
-if (index >= arr->count) {
+if (index > arr->count) {
   fprintf(stderr, "IndexError: Index out of range\n");
   exit(1);
 }
@@ -107,7 +112,7 @@ if (index >= arr->count) {
     resize_array(arr);
   }
   // Resize the array if the number of elements is over capacity
-  for (int i = arr->count-1; i != index; i--) {
+  for (int i = arr->count-1; i >= index; i--) {
     arr->elements[i+1] = arr->elements[i];
   }
   // Move every element after the insert index to the right one position
@@ -143,12 +148,15 @@ arr->count += 1;
  *****/
 void arr_remove(Array *arr, char *element) {
   for (int i = 0; i < arr->count; i++) {
-    if (arr->elements[i] == element) {
-      // free(arr->elements[i]);
+    if (strcmp(arr->elements[i], element) == 0) {
+      printf("Found remove\n");
+      free(arr->elements[i]);
       for (int x = i; x < arr->count; x++) {
+        printf("Running Loop %s becoming %s\n", arr->elements[x], arr->elements[x+1]);
         arr->elements[x] = arr->elements[x+1];
       }
-      break;
+      arr->count--;
+      exit(1);
     }
   }
   // Search for the first occurence of the element and remove it.
@@ -183,12 +191,12 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
-  // arr_append(arr, "STRING4");
-  // arr_insert(arr, "STRING2", 0);
-  // arr_insert(arr, "STRING3", 1);
-  // arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
+  arr_append(arr, "STRING4");
+  arr_insert(arr, "STRING2", 0);
+  arr_insert(arr, "STRING3", 1);
+  arr_print(arr);
+  arr_remove(arr, "STRING3");
+  arr_print(arr);
 
   destroy_array(arr);
 
